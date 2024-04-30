@@ -70,6 +70,24 @@ class Cache:
         return self.get(key, fn=int)
 
 
+def replay(method):
+    """function to display the history of calls of a particular function"""
+    input_k = f"{method.__qualname__}:inputs"
+    output_k = f"{method.__qualname__}:outputs"
+
+    inputs = cache._redis.lrange(input_k, 0, -1)
+    outputs = cache._redis.lrange(output_k, 0, -1)
+
+    if not inputs:
+        print("No history for this method.")
+        return
+
+    print(f"{method.__qualname__} was called {len(inputs)} times:")
+    for inp, outp in zip(inputs, outputs):
+        args = eval(inp.decode())
+        print(f"{method.__qualname__}(*{args}) -> {outp.decode()}")
+
+
 if __name__ == "__main__":
     cache = Cache()
 
