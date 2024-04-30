@@ -19,7 +19,11 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, None]:
+    def get(
+        self,
+        key: str,
+        fn: Callable = None
+    ) -> Union[str, bytes, int, None]:
         """this is get method that take a key string
         argument and an optional Callable argument named fn"""
         data = self._redis.get(key)
@@ -38,16 +42,6 @@ class Cache:
 
 
 if __name__ == "__main__":
-"""    
-    cache = Cache()
-
-    data = b"hello"
-    key = cache.store(data)
-    print(key)
-
-    local_redis = redis.Redis()
-    print(local_redis.get(key))
-"""
     cache = Cache()
 
     TEST_CASES = {
